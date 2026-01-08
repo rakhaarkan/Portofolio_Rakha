@@ -1,0 +1,103 @@
+---
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import matter from 'gray-matter';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const projectsDir = fileURLToPath(new URL('../../content/projects', import.meta.url));
+  const projectFiles = fs.readdirSync(projectsDir).filter(f => f.endsWith('.md'));
+
+  return projectFiles.map(file => {
+    const raw = fs.readFileSync(path.join(projectsDir, file), 'utf-8');
+    const { data } = matter(raw);
+    return { params: { slug: data.slug } };
+  });
+}
+
+const { slug } = Astro.params;
+const projectsDir = fileURLToPath(new URL('../../content/projects', import.meta.url));
+const projectFile = fs.readdirSync(projectsDir)
+  .find(f => f.endsWith('.md') && f.includes(slug));
+
+if (!projectFile) throw new Error(`Project "${slug}" tidak ditemukan!`);
+
+const filePath = path.join(projectsDir, projectFile);
+const raw = fs.readFileSync(filePath, 'utf-8');
+const { data } = matter(raw); // data.description & data.images
+---
+
+<BaseLayout title={data.title}>
+  <header>
+    <div class="back-arrow" onclick="history.back()">&#8592;</div>
+    Profile
+  </header>
+  <main>
+    <button class="close-btn" aria-label="Close">&#10005;</button>
+
+    <h1 class="title">{data.title}</h1>
+    <p class="subtitle"><em>My role.</em> {data.role}</p>
+
+    <div>
+      <p class="section-label">Project description.</p>
+      <div class="project-description">
+        {data.description.map(paragraph => (
+          <p>{paragraph}</p>
+        ))}
+      </div>
+    </div>
+
+    <div>
+      <p class="section-label">Skills and deliverables</p>
+      <div class="skills">
+        {data.skills.map(skill => (
+          <span class="skill">{skill}</span>
+        ))}
+      </div>
+    </div>
+
+    {data.images.map(img => (
+      <div class="image-section">
+        <img src={img.src} alt={img.caption} />
+        <p class="image-caption">{img.caption}</p>
+      </div>
+    ))}
+
+    <div class="published-date">Published on {data.publishedDate}</div>
+
+    <div class="actions">
+      <a href="#" class="report-issue">Report an issue</a>
+      <a href="#" class="copy-link">Copy link &#128279;</a>
+    </div>
+
+    
+  </main>
+
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:16px; background:#fff; color:#000; }
+    header { display:flex; align-items:center; font-weight:bold; font-size:24px; }
+    header .back-arrow { font-weight:normal; font-size:28px; cursor:pointer; margin-right:12px; }
+    .close-btn { position:absolute; right:16px; top:16px; font-weight:bold; font-size:28px; cursor:pointer; }
+    .title { font-size:24px; font-weight:bold; margin:24px 0 12px 0; }
+    .subtitle { font-weight:500; font-size:14px; color:#666666; margin-bottom:32px; }
+    .project-description { font-size:16px; line-height:1.4; margin-bottom:24px; }
+    .section-label { font-weight:600; color:#8b8b8b; margin-bottom:12px; }
+    .skills { display:inline-flex; gap:8px; flex-wrap:wrap; }
+    .skill { background-color:#ececec; border-radius:16px; padding:6px 12px; font-size:14px; }
+    .image-section { margin:16px 0 24px; position:relative; }
+    .image-section img { width:100%; border-radius:8px; max-height:200px; object-fit:cover; }
+    .image-close-btn { position:absolute; top:8px; right:8px; background:#f1f1f1; border-radius:50%; padding:2px 8px; cursor:pointer; font-weight:bold; }
+    .image-caption { font-size:14px; text-align:center; margin-top:8px; color:#555; }
+    .published-date { color:#808080; font-size:12px; margin-bottom:16px; }
+    .actions { display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; }
+    .actions a { font-size:14px; cursor:pointer; text-decoration:underline; }
+    .actions .copy-link { color:#3b7d1b; text-decoration:none; font-weight:600; }
+    .more-section { margin-top:24px; }
+    .more-section a.author-link { color:#3b7d1b; text-decoration:none; font-size:14px; }
+    .more-projects { display:flex; gap:16px; margin-top:16px; }
+    .project-item { flex:1; }
+    .project-item img { width:100%; border-radius:8px; max-height:120px; object-fit:cover; }
+    .project-title { color:#3b7d1b; font-size:14px; text-decoration:none; display:block; margin-top:8px; }
+  </style>
+</BaseLayout>

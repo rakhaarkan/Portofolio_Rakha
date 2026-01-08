@@ -1,16 +1,74 @@
 ---
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import matter from 'gray-matter';
+import BaseLayout from '../layouts/BaseLayout.astro';
 
+// path Windows-safe ke folder projects
+const projectsDir = fileURLToPath(new URL('../content/projects', import.meta.url));
+
+// baca semua file Markdown
+const projectFiles = fs.readdirSync(projectsDir).filter(f => f.endsWith('.md'));
+
+const projects = projectFiles.map(file => {
+  const filePath = path.join(projectsDir, file);
+  const raw = fs.readFileSync(filePath, 'utf-8');
+  const { data } = matter(raw);
+  return data;
+});
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Portofolio Rakha">
+  <h1>Portofolio Rakha</h1>
+  <p>Daftar project saya:</p>
+
+  <div class="project-grid">
+    {projects.map(project => (
+      <a href={`/projects/${project.slug}`} class="project-card">
+        <img src={project.thumbnail} alt={project.title} />
+        <h2>{project.title}</h2>
+        <p>{project.role}</p>
+      </a>
+    ))}
+  </div>
+
+  <style>
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .project-card {
+      display: block;
+      border-radius: 8px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid #ddd;
+      padding: 12px;
+      transition: transform 0.2s;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .project-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .project-card h2 {
+      font-size: 16px;
+      margin: 0 0 4px 0;
+    }
+    .project-card p {
+      font-size: 14px;
+      color: #666;
+      margin: 0;
+    }
+  </style>
+</BaseLayout>
