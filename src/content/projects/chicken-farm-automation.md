@@ -1,6 +1,6 @@
 ---
 title: Agricultural 2 Image Detection and Counting using YOLO
-slug: agricultural2-yolo
+slug: chicken-farm-automation
 role: Computer Vision Developer (YOLO / Object Detection)
 description:
   - Developed an object detection system using YOLO to detect and count chili peppers from agricultural images.

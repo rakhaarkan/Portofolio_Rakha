@@ -1,23 +1,16 @@
 ---
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import matter from 'gray-matter';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// path Windows-safe ke folder projects
-const projectsDir = fileURLToPath(new URL('../content/projects', import.meta.url));
+// Ambil semua project dari source (AMAN untuk Netlify)
+const modules = import.meta.glob(
+  '/src/content/projects/*.md',
+  { eager: true }
+);
 
-// baca semua file Markdown
-const projectFiles = fs.readdirSync(projectsDir).filter(f => f.endsWith('.md'));
-
-const projects = projectFiles.map(file => {
-  const filePath = path.join(projectsDir, file);
-  const raw = fs.readFileSync(filePath, 'utf-8');
-  const { data } = matter(raw);
-  return data;
-});
+// Ambil frontmatter saja
+const projects = Object.values(modules).map((mod) => mod.frontmatter);
 ---
+
 
 <BaseLayout title="Portofolio Rakha">
   <h1>Portofolio Rakha</h1>
