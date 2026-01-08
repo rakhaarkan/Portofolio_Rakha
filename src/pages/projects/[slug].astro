@@ -25,9 +25,11 @@ const { data } = Astro.props;
 
 <BaseLayout title={data.title}>
   <header>
-    <div class="back-arrow" onclick="history.back()">&#8592;</div>
-    Profile
+    <a href="https://projekrakha.netlify.app/" class="back-arrow" aria-label="Back to homepage">
+      &#8592; Profile
+    </a>
   </header>
+
   <main>
     <button class="close-btn" aria-label="Close">&#10005;</button>
 
@@ -62,17 +64,36 @@ const { data } = Astro.props;
     <div class="published-date">Published on {data.publishedDate}</div>
 
     <div class="actions">
-      <a href="#" class="report-issue">Report an issue</a>
-      <a href="#" class="copy-link">Copy link &#128279;</a>
+      <a href="#" id="copyLink" class="copy-link">Copy link &#128279;</a>
     </div>
 
-    
   </main>
+
+  <script>
+    const copyBtn = document.getElementById('copyLink');
+
+    copyBtn?.addEventListener('click', async (e) => {
+      e.preventDefault();
+
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = 'Copied ✔️';
+
+        setTimeout(() => {
+          copyBtn.innerHTML = originalText;
+        }, 1500);
+      } catch (err) {
+        alert('Failed to copy link');
+      }
+    });
+  </script>
 
   <style>
     body { font-family: Arial, sans-serif; margin:0; padding:16px; background:#fff; color:#000; }
     header { display:flex; align-items:center; font-weight:bold; font-size:24px; }
-    header .back-arrow { font-weight:normal; font-size:28px; cursor:pointer; margin-right:12px; }
+    header .back-arrow { font-weight:normal; font-size:28px; cursor:pointer; margin-right:12px; text-decoration:none;color:inherit; }
     .close-btn { position:absolute; right:16px; top:16px; font-weight:bold; font-size:28px; cursor:pointer; }
     .title { font-size:24px; font-weight:bold; margin:24px 0 12px 0; }
     .subtitle { font-weight:500; font-size:14px; color:#666666; margin-bottom:32px; }
