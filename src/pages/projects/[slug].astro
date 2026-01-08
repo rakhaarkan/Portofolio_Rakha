@@ -1,31 +1,26 @@
 ---
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import matter from 'gray-matter';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
+// 1️⃣ Generate static paths dari source (bukan dist)
 export async function getStaticPaths() {
-  const projectsDir = fileURLToPath(new URL('../../content/projects', import.meta.url));
-  const projectFiles = fs.readdirSync(projectsDir).filter(f => f.endsWith('.md'));
+  const modules = import.meta.glob(
+    '/src/content/projects/*.md',
+    { eager: true }
+  );
 
-  return projectFiles.map(file => {
-    const raw = fs.readFileSync(path.join(projectsDir, file), 'utf-8');
-    const { data } = matter(raw);
-    return { params: { slug: data.slug } };
+  return Object.entries(modules).map(([path, mod]) => {
+    const slug = path.split('/').pop().replace('.md', '');
+    return {
+      params: { slug },
+      props: {
+        data: mod.frontmatter,
+      },
+    };
   });
 }
 
-const { slug } = Astro.params;
-const projectsDir = fileURLToPath(new URL('../../content/projects', import.meta.url));
-const projectFile = fs.readdirSync(projectsDir)
-  .find(f => f.endsWith('.md') && f.includes(slug));
-
-if (!projectFile) throw new Error(`Project "${slug}" tidak ditemukan!`);
-
-const filePath = path.join(projectsDir, projectFile);
-const raw = fs.readFileSync(filePath, 'utf-8');
-const { data } = matter(raw); // data.description & data.images
+// 2️⃣ Ambil data dari props (TIDAK baca fs lagi)
+const { data } = Astro.props;
 ---
 
 <BaseLayout title={data.title}>
