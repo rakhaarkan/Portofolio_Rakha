@@ -34,7 +34,7 @@ const { data } = Astro.props;
     <button class="close-btn" aria-label="Close">&#10005;</button>
 
     <h1 class="title">{data.title}</h1>
-    <p class="subtitle"><em>My role.</em> {data.role}</p>
+    <p class="subtitle"><em></em> {data.role}</p>
 
     <div>
       <p class="section-label">Project description.</p>
@@ -46,13 +46,23 @@ const { data } = Astro.props;
     </div>
 
     <div>
-      <p class="section-label">Skills and deliverables</p>
+      <p class="section-label"></p>
       <div class="skills">
         {data.skills.map(skill => (
           <span class="skill">{skill}</span>
         ))}
       </div>
-    </div>
+    </div><br><br>
+
+    {data.link && (
+      <a href={data.link} class="link-card" target="_blank" rel="noopener">
+        <div class="link-content">
+          <span class="link-sub">Access link :</span>
+          <span class="link-main">{data.link}</span>
+        </div>
+      </a>
+    )}
+
 
     {data.images.map(img => (
       <div class="image-section">
@@ -101,8 +111,8 @@ const { data } = Astro.props;
     .section-label { font-weight:600; color:#8b8b8b; margin-bottom:12px; }
     .skills { display:inline-flex; gap:8px; flex-wrap:wrap; }
     .skill { background-color:#ececec; border-radius:16px; padding:6px 12px; font-size:14px; }
-    .image-section { margin:16px 0 24px; position:relative; }
-    .image-section img { width:100%; border-radius:8px; max-height:200px; object-fit:cover; }
+    .image-section { margin:16px 0 24px; position:relative; width: 100%; display: flex; flex-direction: column;}
+    .image-section img { width:100%; border-radius:8px; height:auto; object-fit:cover; }
     .image-close-btn { position:absolute; top:8px; right:8px; background:#f1f1f1; border-radius:50%; padding:2px 8px; cursor:pointer; font-weight:bold; }
     .image-caption { font-size:14px; text-align:center; margin-top:8px; color:#555; }
     .published-date { color:#808080; font-size:12px; margin-bottom:16px; }
@@ -115,5 +125,51 @@ const { data } = Astro.props;
     .project-item { flex:1; }
     .project-item img { width:100%; border-radius:8px; max-height:120px; object-fit:cover; }
     .project-title { color:#3b7d1b; font-size:14px; text-decoration:none; display:block; margin-top:8px; }
+    .link-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+
+  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+
+  background: #f7f7f7;
+  text-decoration: none;
+  color: inherit;
+
+  transition: background 0.2s ease;
+}
+
+.link-card:hover {
+  background: #f0f0f0;
+}
+
+.link-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.link-main {
+  color: #1a7f37;            /* hijau link */
+  font-size: 1.05rem;
+  font-weight: 500;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.link-sub {
+  color: #6b7280;            /* abu */
+  font-size: 0.9rem;
+  word-break: break-all;
+}
+
+.link-icon {
+  font-size: 1.25rem;
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
   </style>
 </BaseLayout>

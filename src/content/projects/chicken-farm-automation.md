@@ -1,27 +1,29 @@
 ---
-title: Agricultural 2 Image Detection and Counting using YOLO
+title: Web-Based Poultry Farm Monitoring & Control Dashboard
 slug: chicken-farm-automation
-thumbnail: https://res.cloudinary.com/ddo3a0ohs/image/upload/v1767731898/cabai_yolo_2.png
-role: Computer Vision Developer (YOLO / Object Detection)
+thumbnail: https://drive.google.com/thumbnail?id=1lTxVC2zv7uDVJbJdLyndvZjGPvPxOdJD&sz=s800
+role: Full-Stack Web & IoT System Developer
 description:
-  - Developed an object detection system using YOLO to detect and count chili peppers from agricultural images.
-  - I collected and prepared the dataset from scratch, including image selection and manual annotation.
+  - I designed and developed a web-based monitoring dashboard for a live poultry farm, integrating real-time data from multiple ESP32/ESP8266 devices through a local server architecture. Sensor data is efficiently collected over a local network and processed before being displayed on the web interface.
+  - The system supports scalable data logging, including cloud-based visualization via ThingSpeak, and has been tested with high-frequency data streams in a production environment. This setup ensures reliable monitoring while minimizing network overhead.
 
 skills:
+  - Web Development
+  - Data Visualization
+  - Internet of Things
   - Python
-  - YOLO
-  - Computer Vision
-  - Image Annotation
-  - OpenCV
+  - C++
+
+link: https://kandangayamrakha.netlify.app/
 
 images:
-  - src: https://res.cloudinary.com/xxx/image/upload/w_1200/portfolio/yolo/image-1.png
-    caption: I started collecting datasets from nearby chili farms.
-  - src: https://res.cloudinary.com/xxx/image/upload/w_1200/portfolio/yolo/image-2.png
-    caption: I train my own model with Google Colab.
-  - src: https://res.cloudinary.com/xxx/image/upload/w_1200/portfolio/yolo/image-3.png
-    caption: I applied my YOLO model in VSCode.
+  - src: https://drive.google.com/thumbnail?id=1lTxVC2zv7uDVJbJdLyndvZjGPvPxOdJD&sz=s800
+    caption: 
+  - src: https://drive.google.com/thumbnail?id=1sNqhttli-o50gQnAXfatxvBBPZVc4w1N&sz=s800
+    caption: 
+  - src: https://drive.google.com/thumbnail?id=1HoRxkz5yXXDSiZxWM95NKHC5zJ0dTWEN&sz=s800
+    caption: 
 
 publishedDate:
-  - 07-01-2026
+  - 12-12-2025
 ---
