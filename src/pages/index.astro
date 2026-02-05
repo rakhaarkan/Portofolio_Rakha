@@ -14,16 +14,18 @@ const projects = Object.values(modules).map((mod) => mod.frontmatter);
 
 <BaseLayout title="Portofolio Rakha">
   <h1>Projek Rakha</h1>
-  <p>Daftar project saya:</p>
+  <p>My project:</p>
 
   <div class="project-grid">
-    {projects.map(project => (
-      <a href={`/projects/${project.slug}`} class="project-card">
-        <img src={project.thumbnail} alt={project.title} />
-        <h2>{project.title}</h2>
-        <p>{project.role}</p>
-      </a>
-    ))}
+    {projects
+      .sort((a, b) => (a.order || 999) - (b.order || 999))
+      .map(project => (
+        <a href={`/projects/${project.slug}`} class="project-card">
+          <img src={project.thumbnail} alt={project.title} />
+          <h2>{project.title}</h2>
+          <p>{project.role}</p>
+        </a>
+      ))}
   </div>
 
   <style>
@@ -42,6 +44,7 @@ const projects = Object.values(modules).map((mod) => mod.frontmatter);
       border: 1px solid #ddd;
       padding: 12px;
       transition: transform 0.2s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow */
     }
     .project-card:hover {
       transform: translateY(-4px);

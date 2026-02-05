@@ -1,4 +1,5 @@
 ---
+order: 3
 title: Agricultural Image Detection and Counting using YOLO
 slug: agricultural-yolo
 thumbnail: https://drive.google.com/thumbnail?id=1-DRzTQ56e_e00OdTHh5VAHBTD0ZdwMl4&sz=s800

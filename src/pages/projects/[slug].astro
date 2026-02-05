@@ -64,12 +64,27 @@ const { data } = Astro.props;
     )}
 
 
-    {data.images.map(img => (
-      <div class="image-section">
-        <img src={img.src} alt={img.caption} />
-        <p class="image-caption">{img.caption}</p>
-      </div>
-    ))}
+    {data.images.map(item => {
+  const isVideo = item.src.includes("/preview");
+
+  return (
+    <div class="image-section">
+      {isVideo ? (
+        <iframe
+          src={item.src}
+          loading="lazy"
+          allow="autoplay; fullscreen"
+          style={`aspect-ratio: ${item.ratio ?? "16/9"}`}
+        />
+      ) : (
+        <img src={item.src} alt={item.caption} />
+      )}
+
+      <p class="image-caption">{item.caption}</p>
+    </div>
+  );
+})}
+
 
     <div class="published-date">Published on {data.publishedDate}</div>
 
@@ -170,6 +185,26 @@ const { data } = Astro.props;
   color: #9ca3af;
   flex-shrink: 0;
 }
+
+.image-section {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.image-section img,
+.image-section iframe {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  border: none;
+}
+
+/* khusus iframe supaya aspect-ratio bekerja sempurna */
+.image-section iframe {
+  background: #000;
+}
+
 
   </style>
 </BaseLayout>

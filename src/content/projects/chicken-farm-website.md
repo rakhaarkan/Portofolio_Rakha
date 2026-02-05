@@ -1,7 +1,8 @@
 ---
+order: 2
 title: Web-Based Poultry Farm Monitoring & Control Dashboard
-slug: chicken-farm-automation
-thumbnail: https://drive.google.com/thumbnail?id=1BbYHIKY9GsCaGd1B3X8TEy3g_n5JONxx&sz=s800
+slug: chicken-farm-website
+thumbnail: https://drive.google.com/thumbnail?id=1qll9lnvr-gGaldjTcSpnVmJUZi1huXtc&sz=s800
 role: Full-Stack Web & IoT System Developer
 description:
   - I designed and developed a web-based monitoring dashboard for a live poultry farm, integrating real-time data from multiple ESP32/ESP8266 devices through a local server architecture. Sensor data is efficiently collected over a local network and processed before being displayed on the web interface.
