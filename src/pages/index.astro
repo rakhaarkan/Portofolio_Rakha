@@ -1,70 +1,149 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// Ambil semua project dari source (AMAN untuk Netlify)
-const modules = import.meta.glob(
+const LANG = 'id'; // ganti ke 'en' kalau mau
+
+const getText = (field) => {
+  if (!field) return '';
+  if (typeof field === 'string') return field;
+  if (Array.isArray(field)) return field;
+  return field[LANG] ?? field.en ?? '';
+};
+
+const projectModules = import.meta.glob(
   '/src/content/projects/*.md',
   { eager: true }
 );
 
-// Ambil frontmatter saja
-const projects = Object.values(modules).map((mod) => mod.frontmatter);
+const projects = Object.values(projectModules)
+  .map((mod) => {
+    const fm = mod.frontmatter;
+
+    return {
+      order: fm.order ?? 999,
+      slug: fm.slug,
+
+      title: getText(fm.title) || 'Untitled Project',
+      role: getText(fm.role),
+      description: getText(fm.description),
+      thumbnail: fm.thumbnail ?? '/placeholder.jpg',
+
+      skills: fm.skills ?? [],
+      images: fm.images ?? [],
+      publishedDate: fm.publishedDate?.[0] ?? null,
+    };
+  })
+  .sort((a, b) => a.order - b.order);
 ---
 
-
 <BaseLayout title="Portofolio Rakha">
-  <h1>Projek Rakha</h1>
-  <p>My project:</p>
+  <header class="page-header">
+    <h1>Projek Rakha</h1>
+    <p>Selected works & experiments</p>
+  </header>
 
-  <div class="project-grid">
-    {projects
-      .sort((a, b) => (a.order || 999) - (b.order || 999))
-      .map(project => (
-        <a href={`/projects/${project.slug}`} class="project-card">
-          <img src={project.thumbnail} alt={project.title} />
+  <section class="project-grid">
+    {projects.map((project) => (
+      <a
+        href={`/projects/${project.slug}`}
+        class="project-card"
+        aria-label={`Lihat project ${project.title}`}
+      >
+        <div class="thumb">
+          <img
+            src={project.thumbnail}
+            alt={project.title}
+            loading="lazy"
+          />
+        </div>
+
+        <div class="card-body">
           <h2>{project.title}</h2>
-          <p>{project.role}</p>
-        </a>
-      ))}
-  </div>
+          {project.role && <p>{project.role}</p>}
+        </div>
+      </a>
+    ))}
+  </section>
 
   <style>
+    /* ===== Layout ===== */
+    .page-header {
+      margin-bottom: 32px;
+    }
+
+    .page-header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .page-header p {
+      margin: 4px 0 0;
+      color: #666;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    /* ===== Grid ===== */
     .project-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
-      gap: 16px;
-      margin-top: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
     }
+
+    /* ===== Card ===== */
     .project-card {
-      display: block;
-      border-radius: 8px;
-      overflow: hidden;
+      display: flex;
+      flex-direction: column;
       text-decoration: none;
       color: inherit;
-      border: 1px solid #ddd;
-      padding: 12px;
-      transition: transform 0.2s;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow */
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e5e5e5;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
     }
+
     .project-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
     }
-    .project-card img {
+
+    /* ===== Thumbnail ===== */
+    .thumb {
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #f3f3f3;
+    }
+
+    .thumb img {
       width: 100%;
-      height: 200px;
+      height: 100%;
       object-fit: cover;
-      border-radius: 4px;
-      margin-bottom: 8px;
+      display: block;
     }
-    .project-card h2 {
+
+    /* ===== Body ===== */
+    .card-body {
+      padding: 14px 16px;
+    }
+
+    .card-body h2 {
       font-size: 16px;
-      margin: 0 0 4px 0;
+      margin: 0 0 6px;
     }
-    .project-card p {
+
+    .card-body p {
       font-size: 14px;
-      color: #666;
+      color: #777;
       margin: 0;
     }
+    /* npm run dev -- --host */
   </style>
 </BaseLayout>
+
+
