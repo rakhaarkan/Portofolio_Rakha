@@ -7,7 +7,7 @@ title:
 
 slug: automated-poultry-weighing
 
-thumbnail: https://drive.google.com/thumbnail?id=REPLACE_WITH_THUMBNAIL_ID&sz=s800
+thumbnail: https://drive.google.com/thumbnail?id=1qL8UREJMPZmYPQ9VaqkqDeMAxV0Oy-9J&sz=s800
 
 role:
   id: Sistem Embedded & Otomasi Data
@@ -32,13 +32,13 @@ skills:
 link:
 
 images:
-  - src: https://drive.google.com/file/d/VIDEO_ID/preview
+  - src: https://drive.google.com/file/d/1O7hcLIu7X7BmO_7CdclOrmE87hUmo_SS/preview
     caption:
       id: Sistem penimbangan otomatis yang beroperasi dengan bantuan aktuator mekanis untuk mengarahkan ayam ke timbangan secara lembut dan kontinu tanpa pengawasan.
       en: Automated weighing system in operation, using a mechanical actuator to gently guide chickens onto the scale for continuous, unattended sampling.
-    ratio: 16/9
+    ratio: 356/632
 
-  - src: https://drive.google.com/thumbnail?id=IMAGE_ID_1&sz=s800
+  - src: https://drive.google.com/thumbnail?id=1gqT278ezPf55sauZ2AucyNf-0jk9toEs&sz=s800
     caption:
       id: Desain fisik timbangan ayam otomatis yang dipasang di dalam kandang.
       en: Physical design of the automated poultry weighing scale installed inside the poultry house.
